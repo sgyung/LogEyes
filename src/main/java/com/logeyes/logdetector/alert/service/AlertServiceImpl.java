@@ -2,6 +2,8 @@ package com.logeyes.logdetector.alert.service;
 
 import com.logeyes.logdetector.alert.domain.Alert;
 import com.logeyes.logdetector.alert.domain.AlertStatus;
+import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
+import com.logeyes.logdetector.alert.event.AlertEventPublisher;
 import com.logeyes.logdetector.alert.repository.AlertRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import java.util.List;
 public class AlertServiceImpl implements AlertService {
 
     private final AlertRepository alertRepository;
+    private final AlertEventPublisher eventPublisher;
 
     // 알림 생성
     @Override
@@ -26,6 +29,17 @@ public class AlertServiceImpl implements AlertService {
         Alert savedAlert = alertRepository.save(alert);
 
         log.debug("[ALERT-CREATE] savedAlert={}", savedAlert.getId());
+
+        eventPublisher.publishAlertCreated(
+                new AlertCreatedEvent(
+                        savedAlert.getId(),
+                        savedAlert.getServiceName(),
+                        savedAlert.getEnvironment(),
+                        savedAlert.getSeverity(),
+                        savedAlert.getErrorRate(),
+                        savedAlert.getDetectedAt()
+                )
+        );
 
         return savedAlert;
     }
