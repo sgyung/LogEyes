@@ -1,8 +1,10 @@
-package com.logeyes.logdetector.alert;
+package com.logeyes.logdetector.alert.sevice;
 
 import com.logeyes.logdetector.alert.domain.Alert;
 import com.logeyes.logdetector.alert.domain.AlertSeverity;
 import com.logeyes.logdetector.alert.domain.AlertStatus;
+import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
+import com.logeyes.logdetector.alert.event.AlertEventPublisher;
 import com.logeyes.logdetector.alert.repository.AlertRepository;
 import com.logeyes.logdetector.alert.service.AlertServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,9 @@ public class AlertServiceTest {
 
     @Mock
     AlertRepository alertRepository;
+
+    @Mock
+    AlertEventPublisher  alertEventPublisher;
 
     @InjectMocks
     AlertServiceImpl alertService;
@@ -49,6 +54,7 @@ public class AlertServiceTest {
         assertThat(saved.getServiceName()).isEqualTo("CB_api");
 
         verify(alertRepository).save(any(Alert.class));
+        verify(alertEventPublisher).publishAlertCreated(any(AlertCreatedEvent.class));
     }
 
     @Test

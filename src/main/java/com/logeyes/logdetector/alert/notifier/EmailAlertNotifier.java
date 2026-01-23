@@ -2,24 +2,24 @@ package com.logeyes.logdetector.alert.notifier;
 
 import com.logeyes.logdetector.alert.domain.AlertSeverity;
 import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ConsoleAlertNotifier implements AlertNotifier{
-
+@RequiredArgsConstructor
+public class EmailAlertNotifier implements AlertNotifier {
     @Override
-    public boolean support(AlertSeverity  severity) {
-        return true;
+    public boolean support(AlertSeverity severity) {
+        return severity == AlertSeverity.CRITICAL;
     }
-
 
     @Override
     public void notify(AlertCreatedEvent event) {
-        log.warn("[CONSOLE-ALERT] service={}, severity={}, errorRate={}",
-                event.getServiceName(),
-                event.getSeverity(),
-                event.getErrorRate());
+        log.info(
+                "[EMAIL] CRITICAL ALERT service={}",
+                event.getServiceName()
+        );
     }
 }

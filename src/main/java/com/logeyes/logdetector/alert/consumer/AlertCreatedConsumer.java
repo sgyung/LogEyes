@@ -2,6 +2,7 @@ package com.logeyes.logdetector.alert.consumer;
 
 import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
 import com.logeyes.logdetector.alert.notifier.AlertNotifier;
+import com.logeyes.logdetector.alert.notifier.AlertNotifierRouter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AlertCreatedConsumer {
 
-    private final AlertNotifier alertNotifier;
+    private final AlertNotifierRouter alertNotifierRouter;
 
     @KafkaListener(
             topics = "alert.created",
@@ -24,6 +25,6 @@ public class AlertCreatedConsumer {
                 event.getServiceName(),
                 event.getSeverity());
 
-        alertNotifier.notify(event);
+        alertNotifierRouter.notify(event);
     }
 }

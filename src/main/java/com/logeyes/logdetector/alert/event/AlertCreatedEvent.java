@@ -2,12 +2,14 @@ package com.logeyes.logdetector.alert.event;
 
 import com.logeyes.logdetector.alert.domain.AlertSeverity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class AlertCreatedEvent {
 
     private Long alertId;
