@@ -34,14 +34,15 @@ public class AlertServiceTest {
     @Test
     void 알림_생성_성공(){
         // given
-        Alert alert = Alert.create(
+        Alert alert = Alert.createFromStat(
                 "CB_api",
                 "prod",
                 "fingerprint",
                 AlertSeverity.MEDIUM,
                 300,
                 5,
-                10);
+                10,
+                0.4);
 
         when(alertRepository.save(any(Alert.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));

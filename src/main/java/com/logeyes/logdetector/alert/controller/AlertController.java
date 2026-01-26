@@ -4,6 +4,7 @@ import com.logeyes.logdetector.alert.domain.Alert;
 import com.logeyes.logdetector.alert.domain.AlertStatus;
 import com.logeyes.logdetector.alert.dto.AlertCreateRequest;
 import com.logeyes.logdetector.alert.dto.AlertResponse;
+import com.logeyes.logdetector.alert.service.AlertCommandService;
 import com.logeyes.logdetector.alert.service.AlertService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -18,11 +19,12 @@ import java.util.List;
 public class AlertController {
 
     private final AlertService alertService;
+    private final AlertCommandService alertCommandService;
 
     @Operation(summary = "알림 생성")
     @PostMapping()
     public AlertResponse create(@RequestBody @Valid AlertCreateRequest request) {
-        Alert alert = alertService.createAlert(request.toEntity());
+        Alert alert = alertCommandService.createManualAlert(request);
 
         return new AlertResponse(alert);
     }

@@ -25,16 +25,4 @@ public class AlertCreateRequest {
     private int errorCount;
     private int totalCount;
 
-    public Alert toEntity() {
-        return Alert.create(
-                serviceName,
-                environment,
-                fingerprint,
-                severity,
-                windowSeconds,
-                errorCount,
-                totalCount
-        );
-    }
-
 }

@@ -2,6 +2,8 @@ package com.logeyes.logdetector.alert.notifier;
 
 import com.logeyes.logdetector.alert.domain.AlertSeverity;
 import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
+import com.logeyes.logdetector.notification.domain.NotificationChannel;
+import com.logeyes.logdetector.notification.result.NotificationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,10 +18,30 @@ public class EmailAlertNotifier implements AlertNotifier {
     }
 
     @Override
-    public void notify(AlertCreatedEvent event) {
+    public NotificationResult notify(AlertCreatedEvent event) {
         log.info(
                 "[EMAIL] CRITICAL ALERT service={}",
                 event.getServiceName()
         );
+
+        return NotificationResult.success(channel());
+    }
+
+    @Override
+    public NotificationChannel channel() {
+        return NotificationChannel.EMAIL;
+    }
+
+    public void retry(Long alertId) {
+
+        log.info(
+                "[EMAIL-RETRY] retry alertId={}",
+                alertId
+        );
+
+        // 실제 프로젝트에서는:
+        // - alert 조회
+        // - 메일 재전송
+        // 지금은 구조용이므로 로그만
     }
 }

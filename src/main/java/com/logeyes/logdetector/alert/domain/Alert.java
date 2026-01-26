@@ -77,14 +77,15 @@ public class Alert {
        생성 메서드
        =========================== */
 
-    public static Alert create(
+    public static Alert createFromStat(
             String serviceName,
             String environment,
             String fingerprint,
             AlertSeverity severity,
             int windowSeconds,
             int errorCount,
-            int totalCount
+            int totalCount,
+            double errorRate
     ) {
         Alert alert = new Alert();
         alert.serviceName = serviceName;
@@ -96,7 +97,7 @@ public class Alert {
         alert.windowSeconds = windowSeconds;
         alert.errorCount = errorCount;
         alert.totalCount = totalCount;
-        alert.errorRate = calculateRate(errorCount, totalCount);
+        alert.errorRate = errorRate;
         alert.createdAt = LocalDateTime.now();
         return alert;
     }
@@ -111,12 +112,5 @@ public class Alert {
     public void resolve() {
         this.status = AlertStatus.RESOLVED;
         this.updatedAt = LocalDateTime.now();
-    }
-
-    private static double calculateRate(int error, int total) {
-        if (total == 0) {
-            return 0.0;
-        }
-        return (double) error / total;
     }
 }
