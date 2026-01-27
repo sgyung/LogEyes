@@ -4,4 +4,5 @@ public interface AlertEventPublisher {
 
     void publishAlertCreated(AlertCreatedEvent event);
 
+    void publishAlertResolved(AlertResolvedEvent event);
 }

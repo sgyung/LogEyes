@@ -110,6 +110,10 @@ public class Alert {
     }
 
     public void resolve() {
+        if (this.status == AlertStatus.RESOLVED) {
+            return;
+        }
+
         this.status = AlertStatus.RESOLVED;
         this.updatedAt = LocalDateTime.now();
     }

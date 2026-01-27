@@ -2,6 +2,7 @@ package com.logeyes.logdetector.alert.notifier;
 
 import com.logeyes.logdetector.alert.domain.AlertSeverity;
 import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
+import com.logeyes.logdetector.alert.event.AlertResolvedEvent;
 import com.logeyes.logdetector.notification.domain.NotificationChannel;
 import com.logeyes.logdetector.notification.result.NotificationResult;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,16 @@ public class EmailAlertNotifier implements AlertNotifier {
         // - alert 조회
         // - 메일 재전송
         // 지금은 구조용이므로 로그만
+    }
+
+    @Override
+    public NotificationResult notifyRecovery(AlertResolvedEvent event) {
+
+        log.info("[RECOVERY] service={}, fingerprint={}, resolvedAt={}",
+                event.getServiceName(),
+                event.getFingerprint(),
+                event.getResolvedAt());
+
+        return NotificationResult.success(channel());
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface AlertRepository extends JpaRepository<Alert, Long> {
 
@@ -26,4 +27,12 @@ public interface AlertRepository extends JpaRepository<Alert, Long> {
 
     // 동일 장애 fingerprint 조회
     List<Alert> findByFingerprint(String fingerprint);
+
+    // ACTIVE 장애 조회
+    Optional<Alert> findTopByServiceNameAndEnvironmentAndFingerprintAndStatusNotOrderByCreatedAtDesc(
+            String serviceName,
+            String environment,
+            String fingerprint,
+            AlertStatus status
+    );
 }

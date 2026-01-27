@@ -4,6 +4,7 @@ import com.logeyes.logdetector.alert.domain.Alert;
 import com.logeyes.logdetector.alert.domain.AlertStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AlertService {
 
@@ -21,4 +22,10 @@ public interface AlertService {
 
     // 알림 해결 처리
     void resolvedAlert(Long id);
+
+    void recoverAlert(
+            String serviceName,
+            String environment,
+            String fingerprint
+    );
 }

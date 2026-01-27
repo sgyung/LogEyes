@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -33,7 +34,7 @@ public class ServiceLogStatDaily {
     private int totalErrors;
 
     @Column(name = "avg_error_rate", nullable = false, precision = 5, scale = 4)
-    private double avgErrorRate;
+    private BigDecimal avgErrorRate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

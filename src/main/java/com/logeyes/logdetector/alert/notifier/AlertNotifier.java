@@ -2,6 +2,7 @@ package com.logeyes.logdetector.alert.notifier;
 
 import com.logeyes.logdetector.alert.domain.AlertSeverity;
 import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
+import com.logeyes.logdetector.alert.event.AlertResolvedEvent;
 import com.logeyes.logdetector.notification.domain.NotificationChannel;
 import com.logeyes.logdetector.notification.result.NotificationResult;
 
@@ -15,4 +16,7 @@ public interface AlertNotifier {
 
     // 알림의 정체성
     NotificationChannel channel();
+
+    // 장애 복구 알림
+    NotificationResult notifyRecovery(AlertResolvedEvent event);
 }

@@ -1,6 +1,7 @@
 package com.logeyes.logdetector.alert.notifier;
 
 import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
+import com.logeyes.logdetector.alert.event.AlertResolvedEvent;
 import com.logeyes.logdetector.notification.result.NotificationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ public class AlertNotifierRouter {
 
     private final List<AlertNotifier> notifiers;
 
+    // 장애 발생 알림
     public List<NotificationResult> notify(AlertCreatedEvent event){
 
         List<NotificationResult> results = new ArrayList<>();
@@ -41,6 +43,46 @@ public class AlertNotifierRouter {
                 );
 
                 log.error("[ALERT-NOTIFY-ERROR] channel={}, severity={}", notifier.channel(),e.getMessage());
+            }
+        }
+
+        return results;
+    }
+
+    // 장애 복구 알림
+    public List<NotificationResult> notifyRecovery(AlertResolvedEvent event) {
+
+        List<NotificationResult> results = new ArrayList<>();
+
+        log.info(
+                "[ALERT-RECOVERY-NOTIFY-START] alertId={}, fingerprint={}",
+                event.getAlertId(),
+                event.getFingerprint()
+        );
+
+        for (AlertNotifier notifier : notifiers) {
+
+            try {
+                NotificationResult result = notifier.notifyRecovery(event);
+                results.add(result);
+
+                log.info(
+                        "[ALERT-RECOVERY-NOTIFY-RESULT] channel={}, status={}",
+                        result.getChannel(),
+                        result.getStatus()
+                );
+
+            } catch (Exception e) {
+
+                results.add(
+                        NotificationResult.fail(notifier.channel(), e.getMessage())
+                );
+
+                log.error(
+                        "[ALERT-RECOVERY-NOTIFY-ERROR] channel={}, msg={}",
+                        notifier.channel(),
+                        e.getMessage()
+                );
             }
         }
 

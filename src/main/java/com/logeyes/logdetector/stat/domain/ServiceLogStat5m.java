@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 @Entity
@@ -35,7 +37,7 @@ public class ServiceLogStat5m {
     private int warnCount;
 
     @Column(name = "error_rate", nullable = false, precision = 5, scale = 4)
-    private double errorRate;
+    private BigDecimal errorRate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -68,10 +70,16 @@ public class ServiceLogStat5m {
        계산 책임
        ========================== */
 
-    private double calculateErrorRate() {
+    public BigDecimal calculateErrorRate() {
         if (totalCount == 0) {
-            return 0.0;
+            return BigDecimal.ZERO;
         }
-        return (double) errorCount / totalCount;
+
+        return BigDecimal.valueOf(errorCount)
+                .divide(
+                        BigDecimal.valueOf(totalCount),
+                        4,
+                        RoundingMode.HALF_UP
+                );
     }
 }

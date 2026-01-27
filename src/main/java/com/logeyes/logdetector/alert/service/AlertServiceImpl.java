@@ -4,6 +4,7 @@ import com.logeyes.logdetector.alert.domain.Alert;
 import com.logeyes.logdetector.alert.domain.AlertStatus;
 import com.logeyes.logdetector.alert.event.AlertCreatedEvent;
 import com.logeyes.logdetector.alert.event.AlertEventPublisher;
+import com.logeyes.logdetector.alert.event.AlertResolvedEvent;
 import com.logeyes.logdetector.alert.repository.AlertRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -88,5 +90,36 @@ public class AlertServiceImpl implements AlertService {
         alert.resolve();
 
         log.info("[ALERT-RESOLVED] alertId={}", id);
+    }
+
+    @Override
+    public void recoverAlert(
+            String serviceName,
+            String environment,
+            String fingerprint
+    ) {
+        alertRepository
+                .findTopByServiceNameAndEnvironmentAndFingerprintAndStatusNotOrderByCreatedAtDesc(
+                        serviceName,
+                        environment,
+                        fingerprint,
+                        AlertStatus.RESOLVED
+                )
+                .ifPresent(alert -> {
+                    alert.resolve();
+
+                    eventPublisher.publishAlertResolved(
+                            new AlertResolvedEvent(
+                                    alert.getId(),
+                                    alert.getServiceName(),
+                                    alert.getEnvironment(),
+                                    alert.getFingerprint(),
+                                    alert.getSeverity(),
+                                    alert.getUpdatedAt()
+                            )
+                    );
+
+                    log.info("[ALERT-RECOVERY] alertId={}", alert.getId());
+                });
     }
 }
