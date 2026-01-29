@@ -15,6 +15,7 @@ public class AlertCreatedEvent {
     private Long alertId;
     private String serviceName;
     private String environment;
+    private String fingerprint;
     private AlertSeverity severity;
     private double errorRate;
     private LocalDateTime detectedAt;
@@ -23,6 +24,7 @@ public class AlertCreatedEvent {
             Long alertId,
             String serviceName,
             String environment,
+            String fingerprint,
             AlertSeverity severity,
             double errorRate,
             LocalDateTime detectedAt
@@ -30,6 +32,7 @@ public class AlertCreatedEvent {
         this.alertId = alertId;
         this.serviceName = serviceName;
         this.environment = environment;
+        this.fingerprint = fingerprint;
         this.severity = severity;
         this.errorRate = errorRate;
         this.detectedAt = detectedAt;

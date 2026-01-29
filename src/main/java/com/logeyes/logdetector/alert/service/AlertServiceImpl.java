@@ -37,6 +37,7 @@ public class AlertServiceImpl implements AlertService {
                         savedAlert.getId(),
                         savedAlert.getServiceName(),
                         savedAlert.getEnvironment(),
+                        savedAlert.getFingerprint(),
                         savedAlert.getSeverity(),
                         savedAlert.getErrorRate(),
                         savedAlert.getDetectedAt()

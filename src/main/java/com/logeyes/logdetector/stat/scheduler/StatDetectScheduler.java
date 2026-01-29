@@ -18,7 +18,7 @@ public class StatDetectScheduler {
     private final StatAlertDetectorService statAlertDetectorService;
 
     // 매 5분마다 실행
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void run() {
         // timeBucket을 "현재 시각"이 아니라 "5분 단위 버킷"으로 맞추는 게 핵심
         LocalDateTime now = LocalDateTime.now();

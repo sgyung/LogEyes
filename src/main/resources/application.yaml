@@ -34,7 +34,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       group-id: alert-notifier
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
 
       key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -49,3 +49,10 @@ logging:
   level:
     root: info
     com.logeyes: debug
+
+gemini:
+  api:
+    base-url: https://generativelanguage.googleapis.com
+    key: ${GEMINI_API_KEY}
+    model: gemini-2.5-flash
+    timeout: 10s
