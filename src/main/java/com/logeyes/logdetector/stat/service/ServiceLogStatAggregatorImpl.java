@@ -20,10 +20,7 @@ public class ServiceLogStatAggregatorImpl implements ServiceLogStatAggregator {
         ServiceLogStat5m stat = ServiceLogStat5m.create(
                 timeBucket,
                 serviceName,
-                environment,
-                totalCount,
-                errorCount,
-                warnCount
+                environment
         );
 
         log.info("[STAT-AGGREGATE] bucket={}, service={}, env={}, total={}, error={}, warn={}, errorRate={}",

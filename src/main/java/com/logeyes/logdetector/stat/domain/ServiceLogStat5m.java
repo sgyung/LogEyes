@@ -42,44 +42,60 @@ public class ServiceLogStat5m {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    /* ==========================
+  /* ==========================
        생성 로직
        ========================== */
 
     public static ServiceLogStat5m create(
             LocalDateTime timeBucket,
             String serviceName,
-            String environment,
-            int totalCount,
-            int errorCount,
-            int warnCount
+            String environment
     ) {
         ServiceLogStat5m stat = new ServiceLogStat5m();
         stat.timeBucket = timeBucket;
         stat.serviceName = serviceName;
         stat.environment = environment;
-        stat.totalCount = totalCount;
-        stat.errorCount = errorCount;
-        stat.warnCount = warnCount;
-        stat.errorRate = stat.calculateErrorRate();
-        stat.createdAt = LocalDateTime.now();
+        stat.totalCount = 0;
+        stat.errorCount = 0;
+        stat.warnCount = 0;
+        stat.errorRate = BigDecimal.ZERO;
         return stat;
     }
 
     /* ==========================
-       계산 책임
+       도메인 행위
        ========================== */
 
-    public BigDecimal calculateErrorRate() {
+    public void increaseTotal() {
+        this.totalCount++;
+        recalculateErrorRate();
+    }
+
+    public void increaseError() {
+        this.errorCount++;
+        recalculateErrorRate();
+    }
+
+    public void increaseWarn() {
+        this.warnCount++;
+    }
+
+    private void recalculateErrorRate() {
         if (totalCount == 0) {
-            return BigDecimal.ZERO;
+            this.errorRate = BigDecimal.ZERO;
+            return;
         }
 
-        return BigDecimal.valueOf(errorCount)
+        this.errorRate = BigDecimal.valueOf(errorCount)
                 .divide(
                         BigDecimal.valueOf(totalCount),
                         4,
                         RoundingMode.HALF_UP
                 );
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 }

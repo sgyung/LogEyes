@@ -9,8 +9,49 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopicConfig {
 
     @Bean
-    public NewTopic alertCreatedDLT() {
-        return TopicBuilder.name("alert.created.DLT")
+    public NewTopic rawLogTopic() {
+        return TopicBuilder.name("raw.log")
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic alertCreatedTopic() {
+        return TopicBuilder.name("alert.created")
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic alertResolvedTopic() {
+        return TopicBuilder.name("alert.resolved")
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic alertNotificationFailedTopic() {
+        return TopicBuilder.name("alert.notification.failed")
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    // DLQ 토픽 (컨슈머에서 .dlq 쓰고 있으니까 소문자로 통일)
+    @Bean
+    public NewTopic rawLogDlqTopic() {
+        return TopicBuilder.name("raw.log.dlq")
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic alertCreatedDlqTopic() {
+        return TopicBuilder.name("alert.created.dlq")
                 .partitions(1)
                 .replicas(1)
                 .build();

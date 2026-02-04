@@ -75,6 +75,30 @@ public class ErrorFingerprintStat5m {
         return stat;
     }
 
+     /* ===============================
+       Domain Behavior
+       =============================== */
+
+    public void increaseErrorCount() {
+        this.errorCount++;
+    }
+
+    /* ===============================
+       Time Bucket Util
+       =============================== */
+
+    /**
+     * 현재 시각을 5분 버킷으로 정규화
+     */
+    public static LocalDateTime normalizeTo5MinBucket(LocalDateTime now) {
+        int minute = now.getMinute();
+        int normalizedMinute = (minute / 5) * 5;
+
+        return now.withMinute(normalizedMinute)
+                .withSecond(0)
+                .withNano(0);
+    }
+
     /* ===============================
        AI 설명용 보조 메서드
        =============================== */

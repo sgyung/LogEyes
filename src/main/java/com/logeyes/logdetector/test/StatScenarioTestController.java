@@ -39,10 +39,7 @@ public class StatScenarioTestController {
         ServiceLogStat5m stat = ServiceLogStat5m.create(
                 bucket,
                 "order-api",
-                "prod",
-                total,
-                error,
-                0
+                "prod"
         );
 
         statRepository.save(stat);
