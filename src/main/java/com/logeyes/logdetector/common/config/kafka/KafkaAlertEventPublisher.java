@@ -13,20 +13,21 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaAlertEventPublisher implements AlertEventPublisher {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, AlertCreatedEvent> alertCreatedKafkaTemplate;
+    private final KafkaTemplate<String, AlertResolvedEvent> alertResolvedKafkaTemplate;
     private static final String CREATE_TOPIC = "alert.created";
     private static final String RESOLVE_TOPIC = "alert.resolved";
 
     @Override
     public void publishAlertCreated(AlertCreatedEvent event) {
-        kafkaTemplate.send(CREATE_TOPIC, event);
+        alertCreatedKafkaTemplate.send(CREATE_TOPIC, event);
 
         log.info("[KAFKA-PUBLISH] topic={}, alertId={}", CREATE_TOPIC, event.getAlertId());
     }
 
     @Override
     public void publishAlertResolved(AlertResolvedEvent event) {
-        kafkaTemplate.send(RESOLVE_TOPIC, event);
+        alertResolvedKafkaTemplate.send(RESOLVE_TOPIC, event);
 
         log.info("[KAFKA-PUBLISH] topic={}, alertId={}", RESOLVE_TOPIC, event.getAlertId());
     }

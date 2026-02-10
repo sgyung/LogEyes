@@ -21,7 +21,8 @@ public class AlertResolvedConsumer {
 
     @KafkaListener(
             topics = "alert.resolved",
-            groupId = "alert-recovery-notifier"
+            groupId = "alert-ai-analyzer",
+            containerFactory = "alertResolvedKafkaListenerContainerFactory"
     )
     public void consume(AlertResolvedEvent event) {
 

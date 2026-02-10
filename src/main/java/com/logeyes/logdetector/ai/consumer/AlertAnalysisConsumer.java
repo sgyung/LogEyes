@@ -25,7 +25,8 @@ public class AlertAnalysisConsumer {
 
     @KafkaListener(
             topics = "alert.created",
-            groupId = "alert-ai-analyzer"
+            groupId = "alert-ai-analyzer",
+            containerFactory = "alertCreatedKafkaListenerContainerFactory"
     )
     public void consume(AlertCreatedEvent event) {
 

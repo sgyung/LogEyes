@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Table(
-        name = "alter",
+        name = "alert",
         indexes = {
-                @Index(name = "idx_alter_service_time", columnList = "service_name, detected_at"),
-                @Index(name = "idx_alter_fingerprint", columnList = "fingerprint")
+                @Index(name = "idx_alert_service_time", columnList = "service_name, detected_at"),
+                @Index(name = "idx_alert_fingerprint", columnList = "fingerprint")
         }
 )
 public class Alert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "alter_id")
+    @Column(name = "alert_id")
     private Long id;
 
     // 서비스명 (ex: auth-api, order-api)

@@ -27,7 +27,8 @@ public class AlertCreatedConsumer {
 
     @KafkaListener(
             topics = "alert.created",
-            groupId = "alert-notifier"
+            groupId = "alert-notifier",
+            containerFactory = "alertCreatedKafkaListenerContainerFactory"
     )
     public void consume(AlertCreatedEvent event){
         log.info("[ALERT-CONSUMED] id={}, service={}, severity={}",

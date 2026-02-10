@@ -90,6 +90,17 @@ public class AlertServiceImpl implements AlertService {
         Alert alert = getAlert(id);
         alert.resolve();
 
+        eventPublisher.publishAlertResolved(
+                new AlertResolvedEvent(
+                        alert.getId(),
+                        alert.getServiceName(),
+                        alert.getEnvironment(),
+                        alert.getFingerprint(),
+                        alert.getSeverity(),
+                        alert.getUpdatedAt()
+                )
+        );
+
         log.info("[ALERT-RESOLVED] alertId={}", id);
     }
 
