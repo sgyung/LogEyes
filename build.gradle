@@ -46,12 +46,6 @@ dependencies {
 	// Swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 
-	// Async (@Async)
-//	implementation 'org.springframework.boot:spring-boot-starter-aop'
-
-	// ConfigurationProperties
-//	implementation 'org.springframework.boot:spring-boot-configuration-processor'
-
 	// JSON Logging
 	implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
 

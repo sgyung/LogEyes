@@ -1,20 +1,19 @@
 spring:
-
   datasource:
-    url: jdbc:mysql://localhost:13306/logdetector?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://mysql:3306/logdetector?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: logdetector
     password: logdetector1234
 
   data:
     redis:
-      host: localhost
+      host: redis
       port: 6379
 
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -24,7 +23,7 @@ spring:
       initialize-schema: always
 
   kafka:
-    bootstrap-servers: localhost:19092
+    bootstrap-servers: kafka:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -46,7 +45,7 @@ spring:
 logging:
   level:
     root: info
-    com.logeyes: debug
+    com.logeyes: info   # 운영에서는 debug 끄는 게 좋음
 
 gemini:
   api:
