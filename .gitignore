@@ -56,3 +56,7 @@ application-prod.yml
 # OS
 .DS_Store
 Thumbs.db
+
+hs_err_pid*.log
+replay_pid*.log
+build

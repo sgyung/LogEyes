@@ -15,14 +15,13 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"     # 외부 접근용 (EC2 퍼블릭 IP:9092)
+      - "19092:19092"   # 외부(PC → EC2)
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
-      # 내부(컨테이너 ↔ 컨테이너), 외부(PC ↔ EC2)
       KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:19092
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://<EC2_PUBLIC_IP>:19092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://13.209.22.125:19092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
 
@@ -34,7 +33,7 @@ services:
     container_name: logeyes-redis
     ports:
       - "6379:6379"
-    command: [ "redis-server", "--appendonly", "yes" ]
+    command: ["redis-server", "--appendonly", "yes"]
 
   mysql:
     image: mysql:8.0
@@ -48,6 +47,23 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: logeyes-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+      - redis
+      - mysql
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/logdetector?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: logdetector
+      SPRING_DATASOURCE_PASSWORD: logdetector1234
+      SPRING_REDIS_HOST: redis
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
 volumes:
   mysql_data:
