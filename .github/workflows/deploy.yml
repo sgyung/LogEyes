@@ -41,3 +41,13 @@ jobs:
                 
             docker push tjsrud2907/logdetector-aws:${{ steps.vars.outputs.TAG }}
             docker push tjsrud2907/logdetector-aws:latest
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/deploy
+            ./deploy.sh
